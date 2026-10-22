@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Interview Finished</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="main">
+
+<h1>
+
+Interview Completed 🎉
+
+</h1>
+
+<br>
+
+<h2>
+
+Your Answers
+
+</h2>
+
+<ol>
+
+{% for answer in answers %}
+
+<li>
+
+{{ answer }}
+
+</li>
+
+{% endfor %}
+
+</ol>
+
+<br>
+
+<a href="/dashboard">
+
+<button>
+
+Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>

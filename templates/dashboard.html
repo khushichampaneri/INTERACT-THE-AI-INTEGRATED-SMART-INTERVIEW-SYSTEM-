@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>AI Interview</h2>
+
+<a href="/dashboard">🏠 Dashboard</a>
+
+<a href="/upload_resume">📄 Upload Resume</a>
+
+<a href="/interview">🎤 Start Interview</a>
+
+<a href="/reports">📊 Reports</a>
+
+<a href="/profile">👤 Profile</a>
+
+<a href="/logout">🚪 Logout</a>
+
+</div>
+
+<div class="main">
+
+<h1>Welcome {{ user }}</h1>
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Resume</h2>
+
+<p>Upload your latest Resume</p>
+
+<a href="/upload_resume">
+
+<button>Upload</button>
+
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>Interview</h2>
+
+<p>Practice with AI</p>
+
+<a href="/interview">
+
+<button>Start</button>
+
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>Reports</h2>
+
+<p>View previous reports</p>
+
+<a href="/reports">
+
+<button>Open</button>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

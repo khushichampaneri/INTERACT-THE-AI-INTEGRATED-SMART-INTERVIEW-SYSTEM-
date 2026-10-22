@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Resume Analysis</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial,sans-serif;
+color:white;
+margin:0;
+padding:30px;
+}
+
+.container{
+width:90%;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:25px;
+border-radius:15px;
+margin-bottom:25px;
+}
+
+h1{
+text-align:center;
+color:#38bdf8;
+}
+
+h2{
+color:#38bdf8;
+}
+
+.score{
+font-size:45px;
+color:#22c55e;
+text-align:center;
+margin:20px;
+}
+
+.progress{
+width:100%;
+height:25px;
+}
+
+.skill{
+display:inline-block;
+background:#38bdf8;
+padding:10px 15px;
+border-radius:8px;
+margin:6px;
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+background:#38bdf8;
+border:none;
+border-radius:8px;
+cursor:pointer;
+color:white;
+}
+
+button:hover{
+background:#0284c7;
+}
+
+.center{
+text-align:center;
+margin-top:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📄 AI Resume Analysis</h1>
+
+<div class="card">
+
+<div class="score">
+
+{{ resume_score.overall }}%
+
+</div>
+
+<h2 style="text-align:center;">
+Overall Resume Score
+</h2>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Resume Performance</h2>
+
+<p>ATS Score</p>
+
+<progress
+class="progress"
+value="{{ resume_score.ats }}"
+max="100">
+</progress>
+
+<br><br>
+
+<p>Technical Skills</p>
+
+<progress
+class="progress"
+value="{{ resume_score.technical }}"
+max="100">
+</progress>
+
+<br><br>
+
+<p>Projects</p>
+
+<progress
+class="progress"
+value="{{ resume_score.projects }}"
+max="100">
+</progress>
+
+<br><br>
+
+<p>Communication</p>
+
+<progress
+class="progress"
+value="{{ resume_score.communication }}"
+max="100">
+</progress>
+
+</div>
+
+<div class="card">
+
+<h2>💻 Detected Skills</h2>
+
+{% for skill in skills %}
+
+<span class="skill">
+
+{{ skill }}
+
+</span>
+
+{% endfor %}
+
+</div>
+
+<div class="card">
+
+<h2>🤖 AI Generated Interview Questions</h2>
+
+<ol>
+
+{% for question in questions %}
+
+<li>{{ question }}</li>
+
+{% endfor %}
+
+</ol>
+
+</div>
+
+<br>
+
+<h2>💼 Career Guidance</h2>
+
+<table border="1" cellpadding="10" cellspacing="0" style="width:100%;border-collapse:collapse;">
+
+<tr>
+    <th>Career</th>
+    <th>Salary</th>
+    <th>Recommended Course</th>
+    <th>Top Companies</th>
+</tr>
+
+{% for item in career_guidance %}
+
+<tr>
+    <td>{{ item.career }}</td>
+    <td>{{ item.salary }}</td>
+    <td>{{ item.course }}</td>
+    <td>{{ item.companies }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<h2>🎯 AI Skill Gap Analysis</h2>
+
+<h3>Readiness Score: {{ gap.score }}%</h3>
+
+<div style="display:flex;justify-content:space-between;gap:30px;">
+
+<div style="width:45%;">
+
+<h3 style="color:green;">✅ Skills You Have</h3>
+
+<ul>
+
+{% for skill in gap.have %}
+
+<li>{{ skill }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+<div style="width:45%;">
+
+<h3 style="color:red;">❌ Skills Missing</h3>
+
+<ul>
+
+{% for skill in gap.missing %}
+
+<li>{{ skill }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="center">
+
+<a href="/dashboard">
+
+<button>
+
+🏠 Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Upload Resume</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="main">
+
+<h1>Upload Resume</h1>
+
+<br>
+
+<form method="POST"
+enctype="multipart/form-data">
+
+<input
+type="file"
+name="resume"
+accept=".pdf,.doc,.docx"
+required>
+
+<br><br>
+
+<button>
+
+Upload Resume
+
+</button>
+
+</form>
+
+<br>
+
+<a href="/dashboard">
+
+Back to Dashboard
+
+</a>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live AI Interview</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+}
+
+.main{
+padding:30px;
+text-align:center;
+}
+
+.timer{
+font-size:32px;
+color:#ff4d4d;
+margin:20px;
+font-weight:bold;
+}
+
+#question{
+margin:25px;
+color:#38bdf8;
+}
+
+video{
+border:3px solid #38bdf8;
+border-radius:15px;
+}
+
+.analysis{
+
+width:420px;
+
+margin:auto;
+
+margin-top:20px;
+
+margin-bottom:20px;
+
+background:#1e293b;
+
+padding:20px;
+
+border-radius:15px;
+
+text-align:left;
+
+}
+
+.analysis h2{
+
+text-align:center;
+
+margin-bottom:15px;
+
+}
+
+.analysis p{
+
+font-size:20px;
+
+margin:12px 0;
+
+}
+
+textarea{
+
+width:90%;
+
+height:180px;
+
+padding:15px;
+
+font-size:18px;
+
+border-radius:10px;
+
+margin-top:20px;
+
+resize:none;
+
+}
+
+button{
+
+padding:12px 25px;
+
+font-size:18px;
+
+margin:10px;
+
+border:none;
+
+border-radius:8px;
+
+cursor:pointer;
+
+background:#38bdf8;
+
+color:white;
+
+}
+
+button:hover{
+
+background:#0284c7;
+
+}
+
+.ai-box{
+
+    width:85%;
+
+    margin:auto;
+
+    background:#1e293b;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    margin-bottom:25px;
+
+    border:2px solid #38bdf8;
+
+}
+
+.ai-box h2{
+
+    color:#38bdf8;
+
+    margin-bottom:20px;
+
+}
+
+#aiQuestion{
+
+    font-size:24px;
+
+    line-height:40px;
+
+    min-height:80px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="main">
+
+<h1>{{ interview_type }} Interview</h1>
+
+<h3>{{ difficulty }}</h3>
+
+<div class="timer">
+
+Time Left :
+<span id="timer">60</span>
+
+</div>
+
+<div class="ai-box">
+
+<h2>
+
+🤖 AI Interviewer
+
+</h2>
+
+<p id="aiQuestion"></p>
+
+</div>
+
+
+
+<br>
+
+<video
+
+id="camera"
+
+width="500"
+
+autoplay>
+
+</video>
+
+<div class="analysis">
+
+<h2>📊 Live Analysis</h2>
+
+<p>
+😊 Emotion :
+<strong id="emotion">
+{{ emotion if emotion else "Waiting..." }}
+</strong>
+</p>
+
+<p>
+👀 Eye Contact :
+<strong id="eye">
+{{ eye if eye else 0 }}%
+</strong>
+</p>
+
+<p>
+
+🎤 Voice Speed :
+<strong>
+
+{{ speed if speed else "Normal" }}
+
+</strong>
+
+</p>
+
+<p>
+
+💬 Filler Words :
+<strong>
+
+{{ filler if filler else 0 }}
+
+</strong>
+
+</p>
+
+<p>
+📈 Confidence :
+<strong id="confidence">
+{{ confidence if confidence else 0 }}%
+</strong>
+</p>
+
+</div>
+
+{% if feedback %}
+
+<div class="analysis">
+
+<h2>🤖 AI Feedback</h2>
+
+<ul>
+
+{% for item in feedback %}
+
+<li>{{ item }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% endif %}
+
+
+
+
+<form
+action="/next_question"
+method="POST">
+
+<textarea
+
+id="answer"
+
+name="answer"
+
+placeholder="Type OR Speak your answer..."
+
+required>
+
+</textarea>
+
+<br>
+
+<button type="submit">
+
+Next Question
+
+</button>
+
+</form>
+
+</div>
+
+<script>
+    let currentStream = null;
+
+// Camera
+
+async function startCamera(deviceId=null){
+
+if(currentStream){
+
+currentStream.getTracks().forEach(track=>track.stop());
+
+}
+
+let constraints={
+
+video:true,
+
+audio:deviceId?
+
+{
+
+deviceId:{exact:deviceId},
+
+echoCancellation:true,
+
+noiseSuppression:true,
+
+autoGainControl:true
+
+}
+
+:
+
+{
+
+echoCancellation:true,
+
+noiseSuppression:true,
+
+autoGainControl:true
+
+}
+
+};
+
+currentStream=await navigator.mediaDevices.getUserMedia(constraints);
+
+document.getElementById("camera").srcObject=currentStream;
+
+}
+
+startCamera();
+
+// ---------------- AI Typing Animation ----------------
+
+const question =
+"{{ question }}";
+
+let i = 0;
+
+function typeQuestion(){
+
+    if(i < question.length){
+
+        document
+        .getElementById("aiQuestion")
+        .innerHTML += question.charAt(i);
+
+        i++;
+
+        setTimeout(typeQuestion,40);
+
+    }
+
+}
+
+typeQuestion();
+
+// ---------------- AI Voice ----------------
+
+const speech =
+new SpeechSynthesisUtterance(question);
+
+speech.rate = 1;
+
+speech.pitch = 1;
+
+speech.volume = 1;
+
+window.speechSynthesis.speak(speech);
+
+
+// Timer
+
+let time=60;
+
+let countdown=setInterval(function(){
+
+time--;
+
+document
+.getElementById("timer").innerHTML=time;
+
+if(time<=0){
+
+clearInterval(countdown);
+
+document.forms[0].submit();
+
+}
+
+},1000);
+
+
+
+
+    
+// ---------------- Live AI Analysis ----------------
+
+const video = document.getElementById("camera");
+const canvas = document.createElement("canvas");
+
+setInterval(function(){
+
+    if(video.videoWidth === 0){
+        return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(video,0,0);
+
+    const image = canvas.toDataURL("image/jpeg");
+
+    fetch("/analyze_frame",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            image:image
+        })
+
+    })
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        document.getElementById("emotion").innerHTML =
+            data.emotion;
+
+        document.getElementById("eye").innerHTML =
+            data.eye + "%";
+
+        document.getElementById("confidence").innerHTML =
+            data.confidence + "%";
+
+    })
+
+    .catch(error=>{
+
+        console.log(error);
+
+    });
+
+},5000);
+
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

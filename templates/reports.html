@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Interview Reports</title>
+
+<style>
+
+body{
+
+    background:#0f172a;
+
+    color:white;
+
+    font-family:Arial;
+
+    padding:40px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th,td{
+
+    padding:15px;
+
+    border:1px solid gray;
+
+    text-align:center;
+
+}
+
+th{
+
+    background:#38bdf8;
+
+}
+
+a{
+
+    color:#38bdf8;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📊 Interview History</h1>
+
+<table>
+
+<tr>
+
+<th>Name</th>
+
+<th>Date</th>
+
+<th>Overall</th>
+
+<th>Emotion</th>
+
+<th>Eye</th>
+
+<th>Confidence</th>
+
+<th>View</th>
+
+</tr>
+
+{% for r in reports %}
+
+<tr>
+
+<td>{{ r.user_name }}</td>
+
+<td>{{ r.date }}</td>
+
+<td>{{ r.overall }}%</td>
+
+<td>{{ r.emotion }}</td>
+
+<td>{{ r.eye }}%</td>
+
+<td>{{ r.confidence }}%</td>
+
+<td>
+
+<a href="/final_report">
+
+View Report
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>

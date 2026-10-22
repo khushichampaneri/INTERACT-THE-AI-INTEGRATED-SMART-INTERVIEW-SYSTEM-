@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Interview Setup</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="main">
+
+<h1>Interview Setup</h1>
+
+<form action="/start_interview" method="POST">
+
+<label>
+
+Interview Type
+
+</label>
+
+<br><br>
+
+<select name="type">
+
+<option>HR</option>
+
+<option>Technical</option>
+
+<option>Behavioral</option>
+
+<option>Coding</option>
+
+</select>
+
+<br><br>
+
+<label>
+
+Difficulty
+
+</label>
+
+<br><br>
+
+<select name="difficulty">
+
+<option>Beginner</option>
+
+<option>Intermediate</option>
+
+<option>Advanced</option>
+
+</select>
+
+<br><br>
+
+<button>
+
+Start Interview
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
